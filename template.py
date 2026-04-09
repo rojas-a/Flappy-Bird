@@ -21,14 +21,12 @@ font = pygame.font.Font(None, 36)
 # -----------------------------
 bg_surface = pygame.image.load("assets/background-night.png").convert()
 floor_surface = pygame.image.load("assets/base.png").convert()
-
 bird_surface = pygame.image.load("assets/bluebird-midflap.png").convert_alpha()
-bird_rect = bird_surface.get_rect(center=(50, HEIGHT // 2))
-
 pipe_surface = pygame.image.load("assets/pipe-green.png").convert()
-
 game_over_surface = pygame.image.load("assets/message.png").convert_alpha()
 game_over_rect = game_over_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+bird_rect = bird_surface.get_rect(center=(50, HEIGHT // 2))
 
 # -----------------------------
 # GAME VARIABLES
@@ -44,55 +42,52 @@ pipe_heights = [200, 250, 300, 350, 400]
 
 score = 0
 
-# custom event for spawning pipes
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE, 1200)
-
 
 # -----------------------------
 # FUNCTIONS
 # -----------------------------
 def draw_floor():
-    screen.blit(floor_surface, (floor_x_pos, FLOOR_Y))
-    screen.blit(floor_surface, (floor_x_pos + floor_surface.get_width(), FLOOR_Y))
+    # TODO:
+    # Draw the floor twice so it can scroll seamlessly
+    # Hint: use floor_x_pos and floor_surface.get_width()
+    pass
 
 
 def create_pipe():
-    random_pipe_pos = random.choice(pipe_heights)
-
-    bottom_pipe = pipe_surface.get_rect(midtop=(WIDTH + 50, random_pipe_pos))
-    top_pipe = pipe_surface.get_rect(midbottom=(WIDTH + 50, random_pipe_pos - 150))
-
-    return bottom_pipe, top_pipe
+    # TODO:
+    # 1. Pick a random pipe height from pipe_heights
+    # 2. Create a bottom pipe coming from the bottom
+    # 3. Create a top pipe coming from the top
+    # 4. Return both pipes
+    #
+    # Hint:
+    # bottom_pipe = pipe_surface.get_rect(...)
+    # top_pipe = pipe_surface.get_rect(...)
+    pass
 
 
 def move_pipes(pipes):
-    for pipe in pipes:
-        pipe.centerx -= 4
-
-    # keep only pipes still on screen
-    visible_pipes = [pipe for pipe in pipes if pipe.right > -50]
-    return visible_pipes
+    # TODO:
+    # Move every pipe to the left
+    # Then return only the pipes still visible on screen
+    pass
 
 
 def draw_pipes(pipes):
-    for pipe in pipes:
-        if pipe.bottom >= HEIGHT:
-            screen.blit(pipe_surface, pipe)
-        else:
-            flipped_pipe = pygame.transform.flip(pipe_surface, False, True)
-            screen.blit(flipped_pipe, pipe)
+    # TODO:
+    # Draw bottom pipes normally
+    # Flip the image vertically for top pipes
+    pass
 
 
 def check_collision(pipes):
-    for pipe in pipes:
-        if bird_rect.colliderect(pipe):
-            return False
-
-    if bird_rect.top <= -50 or bird_rect.bottom >= FLOOR_Y:
-        return False
-
-    return True
+    # TODO:
+    # Return False if the bird hits any pipe
+    # Return False if the bird flies too high or hits the floor
+    # Otherwise return True
+    pass
 
 
 def display_score():
@@ -120,46 +115,42 @@ while True:
             sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and game_active:
-                bird_movement = 0
-                bird_movement -= 5
-
-            elif event.key == pygame.K_SPACE and not game_active:
-                game_active = True
-                reset_game()
+            # TODO:
+            # If SPACE is pressed and the game is active:
+            #   make the bird jump
+            #
+            # If SPACE is pressed and the game is over:
+            #   restart the game
+            pass
 
         if event.type == SPAWNPIPE and game_active:
-            pipe_list.extend(create_pipe())
+            # TODO:
+            # Add two new pipes to pipe_list
+            pass
 
     # draw background
     screen.blit(bg_surface, (0, 0))
 
     if game_active:
-        # bird physics
-        bird_movement += gravity
-        bird_rect.centery += bird_movement
-        screen.blit(bird_surface, bird_rect)
-
-        # pipes
-        pipe_list = move_pipes(pipe_list)
-        draw_pipes(pipe_list)
-
-        # collision
-        game_active = check_collision(pipe_list)
-
-        # score
-        score += 0.01
-        display_score()
+        # TODO:
+        # 1. Apply gravity to bird_movement
+        # 2. Move the bird vertically
+        # 3. Draw the bird
+        # 4. Move and draw pipes
+        # 5. Check for collisions
+        # 6. Update score
+        # 7. Display score
+        pass
 
     else:
         screen.blit(game_over_surface, game_over_rect)
         display_score()
 
-    # floor scrolling
-    floor_x_pos -= 1
-    if floor_x_pos <= -floor_surface.get_width():
-        floor_x_pos = 0
-    draw_floor()
+    # TODO:
+    # Scroll the floor to the left
+    # Reset floor_x_pos when needed
+    # Draw the floor
+    pass
 
     pygame.display.update()
     clock.tick(60)
