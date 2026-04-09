@@ -42,6 +42,7 @@ pipe_heights = [200, 250, 300, 350, 400]
 
 score = 0
 
+# custom event for spawning pipes
 SPAWNPIPE = pygame.USEREVENT
 pygame.time.set_timer(SPAWNPIPE, 1200)
 
@@ -50,48 +51,81 @@ pygame.time.set_timer(SPAWNPIPE, 1200)
 # -----------------------------
 def draw_floor():
     # TODO:
-    # Draw the floor twice so it can scroll seamlessly
-    # Hint: use floor_x_pos and floor_surface.get_width()
+    # Draw the floor twice so it scrolls continuously
+    # Hint:
+    #   one floor starts at floor_x_pos
+    #   the second starts right after the first one ends
     pass
 
 
 def create_pipe():
     # TODO:
-    # 1. Pick a random pipe height from pipe_heights
-    # 2. Create a bottom pipe coming from the bottom
-    # 3. Create a top pipe coming from the top
-    # 4. Return both pipes
+    # 1. Pick a random height from pipe_heights
+    # 2. Create a bottom pipe rect
+    # 3. Create a top pipe rect
+    # 4. Store each pipe in a dictionary with:
+    #       "rect"
+    #       "flipped"
+    #       "scored"
+    # 5. Return both pipes
     #
     # Hint:
-    # bottom_pipe = pipe_surface.get_rect(...)
-    # top_pipe = pipe_surface.get_rect(...)
+    # bottom_pipe = {
+    #     "rect": ...,
+    #     "flipped": False,
+    #     "scored": False
+    # }
+    #
+    # top_pipe should have "flipped": True
     pass
 
 
 def move_pipes(pipes):
     # TODO:
     # Move every pipe to the left
-    # Then return only the pipes still visible on screen
+    # Each pipe is a dictionary, so use pipe["rect"]
+    #
+    # Then return only the pipes that are still visible
     pass
 
 
 def draw_pipes(pipes):
     # TODO:
-    # Draw bottom pipes normally
-    # Flip the image vertically for top pipes
+    # Loop through each pipe
+    # If pipe["flipped"] is True, draw a flipped version
+    # Otherwise draw the normal pipe
     pass
 
 
 def check_collision(pipes):
     # TODO:
-    # Return False if the bird hits any pipe
-    # Return False if the bird flies too high or hits the floor
+    # If bird_rect collides with any pipe rect, return False
+    # If bird goes too high or hits the floor, return False
     # Otherwise return True
     pass
 
 
+def update_score():
+    global score
+
+    # TODO:
+    # Only score bottom pipes:
+    #   if not pipe["flipped"]
+    #
+    # Only score pipes once:
+    #   if not pipe["scored"]
+    #
+    # When the pipe has fully passed the bird,
+    # increase score by 1 and mark it as scored
+    #
+    # Hint:
+    # if pipe["rect"].right < bird_rect.left:
+    #     ...
+    pass
+
+
 def display_score():
-    score_surface = font.render(f"Score: {int(score)}", True, (255, 255, 255))
+    score_surface = font.render(f"Score: {score}", True, (255, 255, 255))
     score_rect = score_surface.get_rect(center=(WIDTH // 2, 50))
     screen.blit(score_surface, score_rect)
 
@@ -117,7 +151,8 @@ while True:
         if event.type == pygame.KEYDOWN:
             # TODO:
             # If SPACE is pressed and the game is active:
-            #   make the bird jump
+            #   reset bird_movement to 0
+            #   make the bird jump upward
             #
             # If SPACE is pressed and the game is over:
             #   restart the game
@@ -125,7 +160,7 @@ while True:
 
         if event.type == SPAWNPIPE and game_active:
             # TODO:
-            # Add two new pipes to pipe_list
+            # Add the new top and bottom pipes to pipe_list
             pass
 
     # draw background
@@ -136,10 +171,14 @@ while True:
         # 1. Apply gravity to bird_movement
         # 2. Move the bird vertically
         # 3. Draw the bird
-        # 4. Move and draw pipes
-        # 5. Check for collisions
-        # 6. Update score
-        # 7. Display score
+        screen.blit(bird_surface, bird_rect)
+
+        # TODO:
+        # 4. Move pipes
+        # 5. Draw pipes
+        # 6. Check for collisions
+        # 7. Update score when pipes are passed
+        # 8. Display score
         pass
 
     else:
@@ -148,8 +187,8 @@ while True:
 
     # TODO:
     # Scroll the floor to the left
-    # Reset floor_x_pos when needed
-    # Draw the floor
+    # Reset it when it goes too far
+    # Then draw the floor
     pass
 
     pygame.display.update()
