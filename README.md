@@ -1,5 +1,7 @@
 # Flappy Bird — ColorStack Workshop
 
+I built and taught this workshop in April 2026 for ~10 college students at ColorStack, walking them through core Python concepts by building a complete game from scratch with Pygame.
+
 A beginner-friendly Python game built with Pygame. In this workshop you'll build Flappy Bird from scratch, learning core programming concepts along the way.
 
 ---
